@@ -13,35 +13,48 @@ namespace Tester.Actors
         public PlaybackActor()
         {
             ConsoleLogger.LogMessage("Playback actor created");
-            Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message));
+            Context.ActorOf(Props.Create<UserCoordinatorActor>(), "UserCoordinator");
+            Context.ActorOf(Props.Create<PlayBackStatisticsActor>(), "PlayBackStatistics");
 
-            /// only when user matches condition message user id == 42
-            Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message), message => message.UserId == 42);
+            //Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message));
+
+            ///// only when user matches condition message user id == 42
+            //Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message), message => message.UserId == 42);
         }
+
+
         protected override void PreStart()
         {
-            ConsoleLogger.LogMessage($"Playback - PreStart");
+            ConsoleLogger.LogMessage("PlaybackActor PreStart");
 
             base.PreStart();
         }
         protected override void PostStop()
         {
-            ConsoleLogger.LogMessage($"Playback - Post stop");
+            ConsoleLogger.LogMessage("PlaybackActor PostStop");
+
             base.PostStop();
+        }
+
+        protected override void PreRestart(Exception reason, Object message)
+        {
+            ConsoleLogger.LogMessage("PlaybackActor PpreRestart because " + reason);
+            base.PreRestart(reason, message);
+        }
+
+
+        protected override void PostRestart(Exception reason)
+        {
+            ConsoleLogger.LogMessage("PlaybackActor PostRestart because " + reason);
+            base.PostRestart(reason);
         }
 
         private void HandlePlayMovieMessage(PlayMovieMessage message)
         {
 
-            ConsoleLogger.LogMessage($"recieved title:  {message.MovieTitle}");
-            ConsoleLogger.LogMessage($"recieved userId: {message.UserId}");
+            ConsoleLogger.LogMessage($"PlaybackActor recieved title:  {message.MovieTitle}");
+            ConsoleLogger.LogMessage($"PlaybackActor recieved userId: {message.UserId}");
 
         }
     }
-
-    /*
-     * Example for untyped actor 
-     
-     
-    */
 }
