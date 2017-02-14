@@ -20,8 +20,13 @@ namespace Tester
             ConsoleLogger.LogMessage("Actor system created");
 
             Props paybackActorProps = Props.Create<PlaybackActor>();
+            // the fact that user actor is created using the props does not mean 
+            // anything as it needs to be registered with the system to know about it.
+            Props userActorProps = Props.Create<UserActor>();
 
             IActorRef actorRef = BulkProcessingSystem.ActorOf(paybackActorProps, "PlaybackActor");
+            actorRef
+
             actorRef.Tell(new PlayMovieMessage("Akka.net rocks", 42));
             //Step to kill the instance of the actor
             actorRef.Tell(PoisonPill.Instance);

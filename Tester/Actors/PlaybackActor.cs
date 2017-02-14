@@ -43,26 +43,5 @@ namespace Tester.Actors
      * Example for untyped actor 
      
      
-      public class PlaybackActor : UntypedActor
-    {
-        public PlaybackActor()
-        {
-            ConsoleLogger.LogMessage("Playback actor created");
-        }
-
-        protected override void OnReceive(Object message)
-        {
-            if(message is PlayMovieMessage)
-            {
-                var m = message as PlayMovieMessage;
-
-                ConsoleLogger.LogMessage($"recieved title: {m.MovieTitle}");
-                ConsoleLogger.LogMessage($"recieved userId: {m.UserId}");
-            }
-            else
-            {
-                Unhandled(message);
-            }
-        }
-    }*/
+    */
 }
