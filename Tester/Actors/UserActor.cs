@@ -5,8 +5,10 @@ namespace Tester.Actors
 {
     public class UserActor : ReceiveActor
     {
-        public UserActor()
+        int UserId { get; set; }
+        public UserActor(int userId)
         {
+            this.UserId = userId;
             ConsoleLogger.LogMessage("User actor created");
         }
 

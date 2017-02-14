@@ -106,5 +106,13 @@ namespace Tester
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+
+        internal static void LogUserMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }
