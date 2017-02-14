@@ -25,7 +25,7 @@ namespace Tester
             actorRef.Tell(new PlayMovieMessage("Akka.net rocks", 42));
             //Step to kill the instance of the actor
             actorRef.Tell(PoisonPill.Instance);
-            // Attempt to send message again
+            // Attempt to send message again => message will be undelivered unless something will pick it up
             actorRef.Tell(new PlayMovieMessage("Akka.net rocks", 42));
 
             Console.ReadKey();
@@ -35,6 +35,15 @@ namespace Tester
 
         }
     }
+
+    /*
+     * 
+     *      Using poison pill
+     *      //Step to kill the instance of the actor
+            actorRef.Tell(PoisonPill.Instance);
+            // Attempt to send message again => message will be undelivered unless something will pick it up
+            actorRef.Tell(new PlayMovieMessage("Akka.net rocks", 42));
+     */
 
     public static class ConsoleLogger
     {
