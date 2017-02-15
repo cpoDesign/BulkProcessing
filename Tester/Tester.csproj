@@ -87,8 +87,8 @@
     <Compile Include="Actors\PlaybackActor.cs" />
     <Compile Include="Actors\PlayBackStatisticsActor.cs" />
     <Compile Include="Actors\SimpleActor.cs" />
-    <Compile Include="Actors\SimulatedCorruptException.cs" />
-    <Compile Include="Actors\SimulatedTerribleException.cs" />
+    <Compile Include="Exceptions\SimulatedCorruptException.cs" />
+    <Compile Include="Exceptions\SimulatedTerribleException.cs" />
     <Compile Include="Actors\UserActor.cs" />
     <Compile Include="Actors\UserCoordinatorActor.cs" />
     <Compile Include="Messages\IncrementPlayCounMessage.cs" />
