@@ -16,41 +16,13 @@ namespace Tester.Actors
             Context.ActorOf(Props.Create<UserCoordinatorActor>(), "UserCoordinator");
             Context.ActorOf(Props.Create<PlayBackStatisticsActor>(), "PlayBackStatistics");
 
-            Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message));
-            Receive<StopMovieMessage>(message => HandleStopPlayMovie(message));
+        
             ///// only when user matches condition message user id == 42
             //Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message), message => message.UserId == 42);
         }
 
 
-        private void HandlePlayMovieMessage(PlayMovieMessage message)
-        {
-            if (string.IsNullOrWhiteSpace(MovieTitle))
-            {
-                MovieTitle = message.MovieTitle;
-            }
-            else
-            {
-                ConsoleLogger.LogMessage($"PlaybackActor - Cannot stop movie {MovieTitle} because there is no movie playing");
-            }
-
-            ConsoleLogger.LogMessage($"PlaybackActor recieved title:  {message.MovieTitle}");
-            ConsoleLogger.LogMessage($"PlaybackActor recieved userId: {message.UserId}");
-
-        }
-        private string MovieTitle { get; set; }
-        private int UserId { get; set; }
-        private void HandleStopPlayMovie(StopMovieMessage message)
-        {
-            if (string.IsNullOrWhiteSpace(MovieTitle))
-            {
-                ConsoleLogger.LogMessage($"PlaybackActor - Cannot stop movie {MovieTitle} because there is no movie playing");
-            }
-            else
-            {
-                MovieTitle = string.Empty;
-            }
-        }
+  
 
         #region lifecycle behavior
         protected override void PreStart()

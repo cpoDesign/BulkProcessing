@@ -121,5 +121,12 @@ namespace Tester
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        internal static void ErrorMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }
