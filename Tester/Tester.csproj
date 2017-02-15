@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\MoviePlayCounterActor.cs" />
     <Compile Include="Actors\PlaybackActor.cs" />
     <Compile Include="Actors\PlayBackStatisticsActor.cs" />
     <Compile Include="Actors\SimpleActor.cs" />

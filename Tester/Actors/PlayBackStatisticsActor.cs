@@ -11,33 +11,34 @@ namespace Tester.Actors
     {
         public PlayBackStatisticsActor()
         {
-
+            Context.ActorOf(Props.Create<MoviePlayCounterActor>(), "MoviePlayCounter");
         }
 
+        #region Lifetime hooks
         protected override void PreStart()
         {
-            ConsoleLogger.LogMessage("PlayBackStatisticsActor PreStart");
+            ConsoleLogger.LogTraceMessage("PlayBackStatisticsActor PreStart");
 
             base.PreStart();
         }
         protected override void PostStop()
         {
-            ConsoleLogger.LogMessage("PlayBackStatisticsActor PostStop");
+            ConsoleLogger.LogTraceMessage("PlayBackStatisticsActor PostStop");
 
             base.PostStop();
         }
 
         protected override void PreRestart(Exception reason, Object message)
         {
-            ConsoleLogger.LogMessage("PlayBackStatisticsActor PpreRestart because " + reason);
+            ConsoleLogger.LogTraceMessage("PlayBackStatisticsActor PpreRestart because " + reason);
             base.PreRestart(reason, message);
         }
 
-
         protected override void PostRestart(Exception reason)
         {
-            ConsoleLogger.LogMessage("PlayBackStatisticsActor PostRestart because " + reason);
+            ConsoleLogger.LogTraceMessage("PlayBackStatisticsActor PostRestart because " + reason);
             base.PostRestart(reason);
-        }
+        } 
+        #endregion
     }
 }
