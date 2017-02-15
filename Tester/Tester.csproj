@@ -89,6 +89,7 @@
     <Compile Include="Actors\SimpleActor.cs" />
     <Compile Include="Actors\UserActor.cs" />
     <Compile Include="Actors\UserCoordinatorActor.cs" />
+    <Compile Include="Messages\IncrementPlayCounMessage.cs" />
     <Compile Include="Messages\PlayMovieMessage.cs" />
     <Compile Include="Messages\StopMovieMessage.cs" />
     <Compile Include="Program.cs" />
