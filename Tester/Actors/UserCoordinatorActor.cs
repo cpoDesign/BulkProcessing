@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Akka.Actor;
 using Tester.Messages;
 
@@ -38,6 +35,7 @@ namespace Tester.Actors
             {
                 IActorRef newChildActorRef = Context.ActorOf(Props.Create(() => new UserActor(userId)), $"User{userId}");
                 _users.Add(userId, newChildActorRef);
+
                 ConsoleLogger.LogUserMessage($"UserCoordinatorActor created for userid: {userId} (Total Users: {_users.Count})");
             }
         }

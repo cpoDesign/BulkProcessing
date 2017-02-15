@@ -26,7 +26,17 @@ namespace Tester.Actors
                 _moviePlayCounts[message.MovieTitle]++;
             }
 
-            ConsoleLogger.LogMessage($"Movie: {message.MovieTitle} has been played {_moviePlayCounts[message.MovieTitle]}");
+            if (_moviePlayCounts[message.MovieTitle] > 2)
+            {
+                throw new SimulatedCorruptException();
+            }
+
+            if (message.MovieTitle == "partial")
+            {
+                throw new SimulatedTerribleException();
+            }
+
+            ConsoleLogger.LogMessage($"Movie: {message.MovieTitle} has been played {_moviePlayCounts[message.MovieTitle]} times");
         }
 
         #region Lifetime hooks
