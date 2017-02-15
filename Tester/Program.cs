@@ -114,5 +114,12 @@ namespace Tester
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        internal static void LogTraceMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }
