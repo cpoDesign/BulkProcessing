@@ -36,6 +36,7 @@ namespace Tester
                     string movieTitle = command.Split(',')[2];
 
                     var message = new PlayMovieMessage(movieTitle, userId);
+                    // call actor using user selector using hierarchy
                     MovieStreamingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
                 }
 

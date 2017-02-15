@@ -37,7 +37,7 @@ namespace Tester.Actors
         {
             _movieTitle = message.MovieTitle;
             ConsoleLogger.LogMessage($"UserActor: {_userId} has started playing {_movieTitle}");
-            Context.ActorSelection("/user/Playback/PlaybackStatistics/MoviePlayCounter").Tell(new IncrementPlayCountMessage(message.MovieTitle));
+            Context.ActorSelection("/user/Playback/PlayBackStatistics/MoviePlayCounter").Tell(new IncrementPlayCountMessage(message.MovieTitle));
 
 
             Become(Playing);
