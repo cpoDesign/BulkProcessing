@@ -2,6 +2,7 @@
 using Akka.Actor;
 using Tester.Actors;
 using Tester.Messages;
+using Common;
 
 namespace Tester
 {
@@ -88,42 +89,5 @@ namespace Tester
             actorRef.Tell(new PlayMovieMessage("Akka.net rocks", 42));
      */
 
-    public static class ConsoleLogger
-    {
-        public static void LogMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
 
-        internal static void LogSystemMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
-
-        internal static void LogUserMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
-        internal static void LogTraceMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
-        internal static void ErrorMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-    }
 }

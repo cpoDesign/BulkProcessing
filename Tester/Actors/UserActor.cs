@@ -1,6 +1,7 @@
 ﻿using System;
 using Akka.Actor;
 using Tester.Messages;
+using Common;
 
 namespace Tester.Actors
 {

@@ -1,4 +1,5 @@
 ﻿using Akka.Actor;
+using Common;
 using System;
 
 namespace Tester.Actors
