@@ -61,7 +61,7 @@ namespace BulkProcessor.Actors
 
         private void StartProcessingMessages(StartBulkProcessingMessage message)
         {
-            ConsoleLogger.LogTraceMessage($"{DateTime.Now.ToString("T")}: Starting processing message recieved");
+            Context.ActorSelection(Constants.LoggerPath).Tell(new LoggerMessage(MessageType.Log, $"{DateTime.Now.ToString("T")}: Starting processing message recieved"));
         }
 
         #region lifecycle methods
@@ -191,21 +191,21 @@ namespace BulkProcessor.Actors
                 case MessageType.Log:
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(message);
+                        Console.WriteLine(message.Message);
                         Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }
                 case MessageType.System:
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(message);
+                        Console.WriteLine(message.Message);
                         Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }
                 case MessageType.Trace:
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(message);
+                        Console.WriteLine(message.Message);
                         Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }

@@ -11,6 +11,6 @@ namespace BulkProcessor
         /// <summary>
         /// Path defined to be able to send messages to logger node
         /// </summary>
-        public static string LoggerPath = "user/ProcessLoggerActor/BulkProcessorActor/ProcessLoggerActor";
+        public static string LoggerPath = "/user/BulkProcessorActor/ProcessLoggerActor";
     }
 }
