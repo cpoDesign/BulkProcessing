@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\BulkProcessorActor.cs" />
+    <Compile Include="Actors\ProcessLoggerActor.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Messages\LoggerMessage.cs" />
     <Compile Include="Messages\MessageType.cs" />
