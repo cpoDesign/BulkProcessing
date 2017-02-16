@@ -5,73 +5,89 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BulkProcessor.Actors;
+using BulkProcessor.Messages;
 
 namespace BulkProcessor
 {
     class Program
     {
-        private static ActorSystem MovieStreamingActorSystem;
+        private static ActorSystem BulkProcessingActorSystem;
 
         static void Main(string[] args)
         {
-            const string SystemName = "MovieStreamingActorSystem";
+            const string SystemName = "BulkProcessingActorSystem";
 
-            ConsoleLogger.LogSystemMessage("Creating MovieStreamingActorSystem");
-            MovieStreamingActorSystem = ActorSystem.Create(SystemName);
+            ConsoleLogger.LogSystemMessage("Creating BulkProcessingActorSystem");
+            BulkProcessingActorSystem = ActorSystem.Create(SystemName);
 
-            //ConsoleLogger.LogSystemMessage("Creating actor supervisory hierarchy");
-            //MovieStreamingActorSystem.ActorOf(Props.Create<PlaybackActor>(), "Playback");
-            do
-            {
-                ShortPause();
+            ConsoleLogger.LogSystemMessage("Creating actor supervisory hierarchy");
+            // setup the system
+            BulkProcessingActorSystem.ActorOf(Props.Create<BulkProcessorActor>(), "BulkProcessorActor");
 
-                Console.WriteLine();
-                ConsoleLogger.LogSystemMessage("enter a command and hit enter");
+            // send message to start processing the data
+            var someActor = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
 
-                //var command = Console.ReadLine().ToLowerInvariant();
-                //if (command.StartsWith("play"))
-                //{
-                //    int userId = int.Parse(command.Split(',')[1]);
-                //    string movieTitle = command.Split(',')[2];
+            var someMessage = new StartBulkProcessingMessage();
+            BulkProcessingActorSystem.Scheduler
+                .Schedule(TimeSpan.FromSeconds(0),
+                    TimeSpan.FromSeconds(30),
+                    someActor, someMessage);
 
-                //    var message = new PlayMovieMessage(movieTitle, userId);
-                //    // call actor using user selector using hierarchy
-                //    MovieStreamingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
-                //}
+            Console.ReadKey();
+            BulkProcessingActorSystem.AwaitTermination();
 
-                //if (command.StartsWith("stop"))
-                //{
-                //    int userId = int.Parse(command.Split(',')[1]);
-                //    var message = new StopMovieMessage(userId);
+            ////do
+            ////{
+            ////    ShortPause();
 
-                //    MovieStreamingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
-                //}
+            ////    Console.WriteLine();
+            ////    ConsoleLogger.LogSystemMessage("enter a command and hit enter");
 
-                //if (command.StartsWith("exit"))
-                //{
-                //    MovieStreamingActorSystem.Terminate();
-                //    ConsoleLogger.LogSystemMessage("Actor system shutdown. Press any key to exit...");
-                //    Console.ReadKey();
-                //    Environment.Exit(1);
-                //}
+            ////    //var command = Console.ReadLine().ToLowerInvariant();
+            ////    //if (command.StartsWith("play"))
+            ////    //{
+            ////    //    int userId = int.Parse(command.Split(',')[1]);
+            ////    //    string movieTitle = command.Split(',')[2];
 
-            } while (true);
+            ////    //    var message = new PlayMovieMessage(movieTitle, userId);
+            ////    //    // call actor using user selector using hierarchy
+            ////    //    BulkProcessingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
+            ////    //}
+
+            ////    //if (command.StartsWith("stop"))
+            ////    //{
+            ////    //    int userId = int.Parse(command.Split(',')[1]);
+            ////    //    var message = new StopMovieMessage(userId);
+
+            ////    //    BulkProcessingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
+            ////    //}
+
+            ////    //if (command.StartsWith("exit"))
+            ////    //{
+            ////    //    BulkProcessingActorSystem.Terminate();
+            ////    //    ConsoleLogger.LogSystemMessage("Actor system shutdown. Press any key to exit...");
+            ////    //    Console.ReadKey();
+            ////    //    Environment.Exit(1);
+            ////    //}
+
+            ////} while (true);
 
 
-            //// the fact that user actor is created using the props does not mean 
-            //// anything as it needs to be registered with the system to know about it.
-            //Props userActorProps = Props.Create<UserActor>();
+            //////// the fact that user actor is created using the props does not mean 
+            //////// anything as it needs to be registered with the system to know about it.
+            //////Props userActorProps = Props.Create<UserActor>();
 
-            //IActorRef actorRef = BulkProcessingSystem.ActorOf(paybackActorProps, "PlaybackActor");
+            //////IActorRef actorRef = BulkProcessingSystem.ActorOf(paybackActorProps, "PlaybackActor");
 
-            //actorRef.Tell("Akka.net rocks");
-            ////Step to kill the instance of the actor
-            //actorRef.Tell(PoisonPill.Instance);
-            //// Attempt to send message again => message will be undelivered unless something will pick it up
-            //actorRef.Tell("Akka.net rocks");
+            //////actorRef.Tell("Akka.net rocks");
+            ////////Step to kill the instance of the actor
+            //////actorRef.Tell(PoisonPill.Instance);
+            //////// Attempt to send message again => message will be undelivered unless something will pick it up
+            //////actorRef.Tell("Akka.net rocks");
 
-            //Console.ReadKey();
-            //BulkProcessingSystem.Terminate();
+            //////Console.ReadKey();
+            //////BulkProcessingSystem.Terminate();
 
 
 
