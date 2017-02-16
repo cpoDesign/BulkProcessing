@@ -191,25 +191,22 @@ namespace BulkProcessor.Actors
                 case MessageType.Log:
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(message.Message);
-                        Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }
                 case MessageType.System:
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(message.Message);
-                        Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }
                 case MessageType.Trace:
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(message.Message);
-                        Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }
             }
+
+            Console.WriteLine(message.Message);
+            Console.ForegroundColor = ConsoleColor.White;
         }
         #region lifecycle methods
 
