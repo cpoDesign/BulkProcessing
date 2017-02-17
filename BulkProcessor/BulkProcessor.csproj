@@ -55,12 +55,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\BulkProcessorActor.cs" />
-    <Compile Include="Actors\ProcessLoggerActor.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Messages\LoggerMessage.cs" />
-    <Compile Include="Messages\MessageType.cs" />
-    <Compile Include="Messages\StartBulkProcessingMessage.cs" />
+    <Compile Include="Actors\BatchesManagerActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManagerActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\BulkProcessorActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\ConfigActor.cs" />
+    <Compile Include="Actors\SystemMessages\ConfigMessage.cs" />
+    <Compile Include="Actors\SystemMessages\LoggerMessage.cs" />
+    <Compile Include="Actors\SystemMessages\StartBulkProcessingMessage.cs" />
+    <Compile Include="Actors\SystemMessages\StartProcessingMessage.cs" />
+    <Compile Include="Constants\MessageType.cs" />
+    <Compile Include="Actors\BatchesProcessor\ProcessLoggerActor.cs" />
+    <Compile Include="Constants\SystemConstants.cs" />
+    <Compile Include="Constants\SystemPathsConstants.cs" />
+    <Compile Include="Constants\LoggerTypes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,7 +75,10 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManager\Movies\" />
+    <Folder Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManager\People\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{5504C81F-0C31-461B-9DAE-4A4257C01D4A}</Project>

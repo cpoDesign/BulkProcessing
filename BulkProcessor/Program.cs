@@ -1,23 +1,19 @@
 ﻿using Akka.Actor;
 using Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BulkProcessor.Actors;
-using BulkProcessor.Messages;
+using BulkProcessor.Actors.BatchesProcessor;
+using BulkProcessor.Actors.SystemMessages;
 
 namespace BulkProcessor
 {
     class Program
     {
         private static ActorSystem BulkProcessingActorSystem;
+        const string SystemName = "BulkProcessingActorSystem";
 
         static void Main(string[] args)
         {
-            const string SystemName = "BulkProcessingActorSystem";
-
             ConsoleLogger.LogSystemMessage("Creating BulkProcessingActorSystem");
             BulkProcessingActorSystem = ActorSystem.Create(SystemName);
 
@@ -36,6 +32,7 @@ namespace BulkProcessor
 
             Console.ReadKey();
             BulkProcessingActorSystem.AwaitTermination();
+            Environment.Exit(1);
 
             ////do
             ////{

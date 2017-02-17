@@ -5,6 +5,13 @@ System is composed from multiple actors that get dynamically generated and torn 
 System is dynamically scalable
 
 ======================================
+== Working with actors ==
+======================================
+
+How to identify actors
+http://getakka.net/docs/Working%20with%20actors
+
+======================================
 ==Error handling ==
 ======================================
 

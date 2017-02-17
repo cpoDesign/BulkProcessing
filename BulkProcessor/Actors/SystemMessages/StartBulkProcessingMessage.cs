@@ -1,4 +1,4 @@
-﻿namespace BulkProcessor.Messages
+﻿namespace BulkProcessor.Actors.SystemMessages
 {
     public class StartBulkProcessingMessage
     {

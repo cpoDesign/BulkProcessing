@@ -1,9 +1,10 @@
 using System;
 using Akka.Actor;
-using BulkProcessor.Messages;
+using BulkProcessor.Actors.SystemMessages;
+using BulkProcessor.Constants;
 using Common;
 
-namespace BulkProcessor.Actors
+namespace BulkProcessor.Actors.BatchesProcessor
 {
     /// <summary>
     /// Monitoring actor, output logs into some place
@@ -19,26 +20,29 @@ namespace BulkProcessor.Actors
         {
             switch (message.MessageType)
             {
-                case MessageType.Log:
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                }
-                case MessageType.System:
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                }
-                case MessageType.Trace:
-                {
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    break;
-                }
+                case LoggerTypes.Log:
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    }
+                case LoggerTypes.System:
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    }
+                case LoggerTypes.Trace:
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        break;
+                    }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            Console.WriteLine(message.Message);
+            Console.WriteLine($"{DateTime.Now.ToString("T")}: {message.Message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
+
         #region lifecycle methods
 
         protected override void PreStart()

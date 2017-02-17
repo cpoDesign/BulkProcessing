@@ -1,12 +1,11 @@
-﻿namespace BulkProcessor.Actors
+﻿namespace BulkProcessor.Constants
 {
     /// <summary>
     /// Identifies message types we recieve for batch processing
     /// </summary>
     public enum MessageType
     {
-        TCS,
-        IBS,
-        DDS
+        People,
+        Movies,
     }
 }
