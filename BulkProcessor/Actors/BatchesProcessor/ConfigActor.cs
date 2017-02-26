@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Akka.Actor;
+using Akka.Event;
 using BulkProcessor.Actors.SystemMessages;
-using Common;
 
 namespace BulkProcessor.Actors.BatchesProcessor
 {
@@ -13,11 +13,14 @@ namespace BulkProcessor.Actors.BatchesProcessor
     public class ConfigActor : ReceiveActor
     {
         private Dictionary<string, string> _configurationDictionary;
+
+        private ILoggingAdapter _logger = Context.GetLogger();
         public ConfigActor()
         {
             Receive<ConfigMessage>(message =>
             {
                 var value = GetConfig(message); 
+                _logger.Debug("Recieved request for {0} confing with value {1}", message.Key, value);
                 Sender.Tell(value, Self);
             });
         }
@@ -44,27 +47,27 @@ namespace BulkProcessor.Actors.BatchesProcessor
 
         protected override void PreStart()
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PreStart");
+            _logger.Debug($"{this.GetType().Name} PreStart");
 
             base.PreStart();
         }
 
         protected override void PostStop()
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PostStop");
+            _logger.Debug($"{this.GetType().Name} PostStop");
 
             base.PostStop();
         }
 
         protected override void PreRestart(Exception reason, Object message)
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PpreRestart because " + reason);
+            _logger.Debug($"{this.GetType().Name} PpreRestart because " + reason);
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PostRestart because " + reason);
+            _logger.Debug($"{this.GetType().Name} PostRestart because " + reason);
             base.PostRestart(reason);
         }
 

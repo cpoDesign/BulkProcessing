@@ -21,8 +21,8 @@ namespace BulkProcessor
             // setup the system
             BulkProcessingActorSystem.ActorOf(Props.Create<BulkProcessorActor>(), "BulkProcessorActor");
 
-            // send message to start processing the data
-            var someActor = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
+            ////send message to start processing the data
+           var someActor = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
 
             var someMessage = new StartBulkProcessingMessage();
             BulkProcessingActorSystem.Scheduler
@@ -30,45 +30,42 @@ namespace BulkProcessor
                     TimeSpan.FromSeconds(30),
                     someActor, someMessage);
 
-            Console.ReadKey();
-            BulkProcessingActorSystem.AwaitTermination();
-            Environment.Exit(1);
 
-            ////do
-            ////{
-            ////    ShortPause();
 
-            ////    Console.WriteLine();
-            ////    ConsoleLogger.LogSystemMessage("enter a command and hit enter");
+            do
+            {
+                ShortPause();
 
-            ////    //var command = Console.ReadLine().ToLowerInvariant();
-            ////    //if (command.StartsWith("play"))
-            ////    //{
-            ////    //    int userId = int.Parse(command.Split(',')[1]);
-            ////    //    string movieTitle = command.Split(',')[2];
+                Console.WriteLine();
+                ConsoleLogger.LogSystemMessage("enter a command and hit enter");
 
-            ////    //    var message = new PlayMovieMessage(movieTitle, userId);
-            ////    //    // call actor using user selector using hierarchy
-            ////    //    BulkProcessingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
-            ////    //}
+                var command = Console.ReadLine().ToLowerInvariant();
+                if (command.StartsWith("play"))
+                {
+                    int userId = int.Parse(command.Split(',')[1]);
+                    string movieTitle = command.Split(',')[2];
 
-            ////    //if (command.StartsWith("stop"))
-            ////    //{
-            ////    //    int userId = int.Parse(command.Split(',')[1]);
-            ////    //    var message = new StopMovieMessage(userId);
+                    //var message = new PlayMovieMessage(movieTitle, userId);
+                    // call actor using user selector using hierarchy
+                    //BulkProcessingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
+                }
 
-            ////    //    BulkProcessingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
-            ////    //}
+                //if (command.startswith("stop"))
+                //{
+                //    int userid = int.parse(command.split(',')[1]);
+                //    var message = new stopmoviemessage(userid);
 
-            ////    //if (command.StartsWith("exit"))
-            ////    //{
-            ////    //    BulkProcessingActorSystem.Terminate();
-            ////    //    ConsoleLogger.LogSystemMessage("Actor system shutdown. Press any key to exit...");
-            ////    //    Console.ReadKey();
-            ////    //    Environment.Exit(1);
-            ////    //}
+                //    bulkprocessingactorsystem.actorselection("/user/playback/usercoordinator").tell(message);
+                //}
 
-            ////} while (true);
+                if (command.StartsWith("exit"))
+                {
+                    BulkProcessingActorSystem.Terminate();
+                    ConsoleLogger.LogSystemMessage("Actor system shutdown. Press any key to exit...");
+                    Environment.Exit(1);
+                }
+
+            } while (true);
 
 
             //////// the fact that user actor is created using the props does not mean 
@@ -85,10 +82,8 @@ namespace BulkProcessor
 
             //////Console.ReadKey();
             //////BulkProcessingSystem.Terminate();
-
-
-
         }
+
         public static void ShortPause()
         {
             System.Threading.Thread.Sleep(1000);
