@@ -10,6 +10,6 @@
         /// <summary>
         /// Path define to be able to send messages to config actor
         /// </summary>
-        public static string ConfigActorPath = "/user/BulkProcessorActor/ProcessLoggerActor";
+        public static string ConfigActorPath = "/user/BulkProcessorActor/ConfigActor";
     }
 }
