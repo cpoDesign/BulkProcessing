@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Akka.Actor;
-using BulkProcessor.Actors.BatchesProcessor;
+using Akka.Event;
 using BulkProcessor.Actors.BatchesProcessor.BulkProcessor;
 using BulkProcessor.Actors.SystemMessages;
 using BulkProcessor.Constants;
-using Common;
 
 namespace BulkProcessor.Actors
 {
@@ -16,6 +15,8 @@ namespace BulkProcessor.Actors
     public class BatchesManagerActor : ReceiveActor
     {
         private readonly Dictionary<MessageType, IActorRef> _registeredMessageTypes;
+
+        private ILoggingAdapter _logger = Context.GetLogger();
 
         public BatchesManagerActor()
         {
@@ -62,27 +63,27 @@ namespace BulkProcessor.Actors
 
         protected override void PreStart()
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PreStart");
-
+            _logger.Debug($"{this.GetType().Name} PreStart");
+            
             base.PreStart();
         }
 
         protected override void PostStop()
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PostStop");
+            _logger.Debug($"{this.GetType().Name} PostStop");
 
             base.PostStop();
         }
 
         protected override void PreRestart(Exception reason, Object message)
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PpreRestart because " + reason);
+            _logger.Debug($"{this.GetType().Name} PpreRestart because " + reason);
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PostRestart because " + reason);
+            _logger.Debug($"{this.GetType().Name} PostRestart because " + reason);
             base.PostRestart(reason);
         }
 

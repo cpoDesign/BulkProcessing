@@ -2,6 +2,7 @@
 
 namespace Common
 {
+    [Obsolete("use internal logger instead")]
     public static class ConsoleLogger
     {
         public static void LogMessage(string message)

@@ -1,8 +1,8 @@
 using System;
 using Akka.Actor;
+using Akka.Event;
 using BulkProcessor.Actors.SystemMessages;
 using BulkProcessor.Constants;
-using Common;
 
 namespace BulkProcessor.Actors.BatchesProcessor
 {
@@ -11,6 +11,8 @@ namespace BulkProcessor.Actors.BatchesProcessor
     /// </summary>
     public class ProcessLoggerActor : ReceiveActor
     {
+        private ILoggingAdapter _logger = Context.GetLogger();
+
         public ProcessLoggerActor()
         {
             Receive<LoggerMessage>(message => LogMessage(message));
@@ -22,52 +24,50 @@ namespace BulkProcessor.Actors.BatchesProcessor
             {
                 case LoggerTypes.Log:
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        _logger.Info(message.Message);
                         break;
                     }
                 case LoggerTypes.System:
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        _logger.Warning(message.Message);
                         break;
                     }
                 case LoggerTypes.Trace:
                     {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        _logger.Debug(message.Message);
                         break;
                     }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            Console.WriteLine($"{DateTime.Now.ToString("T")}: {message.Message}");
-            Console.ForegroundColor = ConsoleColor.White;
         }
 
         #region lifecycle methods
 
         protected override void PreStart()
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PreStart");
+            _logger.Debug($"{this.GetType().Name} PreStart");
 
             base.PreStart();
         }
 
         protected override void PostStop()
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PostStop");
+            _logger.Debug($"{this.GetType().Name} PostStop");
 
             base.PostStop();
         }
 
         protected override void PreRestart(Exception reason, Object message)
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PpreRestart because " + reason);
+            _logger.Debug($"{this.GetType().Name} PpreRestart because " + reason);
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            ConsoleLogger.LogMessage($"{this.GetType().Name} PostRestart because " + reason);
+            _logger.Debug($"{this.GetType().Name} PostRestart because " + reason);
             base.PostRestart(reason);
         }
 
