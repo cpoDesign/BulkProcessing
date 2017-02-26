@@ -32,7 +32,7 @@ namespace BulkProcessor.Actors
         /// <param name="message"></param>
         void StartProcessingMessages(StartBulkProcessingMessage message) 
         {
-            Context.ActorSelection(SystemPathsConstants.LoggerActorPath).Tell(new LoggerMessage(LoggerTypes.Trace, $"Starting processing message recieved"));
+            Context.ActorSelection(SystemPathsConstants.LoggerActorPath).Tell(new LoggerMessage(LoggerTypes.Trace, "Starting processing message recieved"));
 
             // For each message type we have we can generate a processor and hold the reference in collection. 
             // This is because we can after find out which has been registered.

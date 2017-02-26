@@ -1,35 +1,38 @@
-﻿using System;
+using System;
+using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Event;
-using Akka.DI;
-using Akka.DI.Core;
+using BulkProcessor.Actors.SystemMessages;
+using BulkProcessor.Constants;
 
 namespace BulkProcessor.Actors.BatchesProcessor
 {
     /// <summary>
-    /// The overall process actor, manages all actors for processing system
+    /// Loads data about the batche
     /// </summary>
-    public class BulkProcessorActor : ReceiveActor
+    public class BatchTypeDataAccessActor : ReceiveActor
     {
         private ILoggingAdapter _logger = Context.GetLogger();
-        public BulkProcessorActor()
+        public BatchTypeDataAccessActor()
         {
-            
-            _logger.Info("{0} actor created info", this.GetType().Name);
+            var configActor = Context.ActorSelection(SystemPathsConstants.ConfigActorPath);
+            var message = new ConfigMessage(SystemConstants.BatchSize);
+            configActor.Tell(message, Self);
 
-            //_logger.Warning("{0} actor created warning", this.GetType().Name);
+            //Task.Run(async () =>
+            //{
+            //    var t1 = configActor.Ask(new ConfigMessage(SystemConstants.BatchSize), TimeSpan.FromSeconds(1));
 
-            //_logger.Debug("{0} actor created debug", this.GetType().Name);
+            //    await Task.WhenAll(t1);
 
-            //_logger.Error("{0} actor created error", this.GetType().Name);
+            //    return t1.Result;
+            //}).PipeTo(configActor, Self);
 
-            Context.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
-            Context.ActorOf(Props.Create<ProcessLoggerActor>(), "ProcessLoggerActor");
-
-            // let DI to resove actor
-            Context.ActorOf(Context.DI().Props<ConfigActor>(), "ConfigActor");
-
-
+            //configActor.Ask(new ConfigMessage(SystemConstants.BatchSize), TimeSpan.FromSeconds(1)).ContinueWith(t =>
+            //{
+            //    Console.WriteLine(t.Result);
+            //});
+            //Console.WriteLine(result.r);
         }
 
         #region lifecycle methods

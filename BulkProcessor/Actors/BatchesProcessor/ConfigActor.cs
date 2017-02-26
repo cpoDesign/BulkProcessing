@@ -4,6 +4,7 @@ using System.Configuration;
 using Akka.Actor;
 using Akka.Event;
 using BulkProcessor.Actors.SystemMessages;
+using BulkProcessor.DI;
 
 namespace BulkProcessor.Actors.BatchesProcessor
 {
@@ -12,11 +13,14 @@ namespace BulkProcessor.Actors.BatchesProcessor
     /// </summary>
     public class ConfigActor : ReceiveActor
     {
+        private readonly ISystemConfig _systemConfig;
         private Dictionary<string, string> _configurationDictionary;
 
         private ILoggingAdapter _logger = Context.GetLogger();
-        public ConfigActor()
+        public ConfigActor(ISystemConfig systemConfig )
         {
+            _configurationDictionary = new Dictionary<string, string>();
+            _systemConfig = systemConfig;
             Receive<ConfigMessage>(message =>
             {
                 var value = GetConfig(message); 
@@ -29,7 +33,7 @@ namespace BulkProcessor.Actors.BatchesProcessor
         {
             if (!_configurationDictionary.ContainsKey(message.Key))
             {
-                var value = ConfigurationSettings.AppSettings[message.Key];
+                var value = _systemConfig.GetAppConfigKey(message.Key);
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     var e =  new ConfigurationException($"Failed to find config with name:{message.Key}");

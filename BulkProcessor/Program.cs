@@ -4,6 +4,11 @@ using System;
 using BulkProcessor.Actors;
 using BulkProcessor.Actors.BatchesProcessor;
 using BulkProcessor.Actors.SystemMessages;
+using Akka.DI;
+using Akka.DI.AutoFac;
+using Akka.DI.Core;
+using Autofac;
+using BulkProcessor.DI;
 
 namespace BulkProcessor
 {
@@ -14,21 +19,34 @@ namespace BulkProcessor
 
         static void Main(string[] args)
         {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<SystemConfig>().As<ISystemConfig>();
+
+            builder.RegisterType<ConfigActor>();
+
+            var container = builder.Build();
+
+
             ConsoleLogger.LogSystemMessage("Creating BulkProcessingActorSystem");
             BulkProcessingActorSystem = ActorSystem.Create(SystemName);
+
+            IDependencyResolver resolver = new AutoFacDependencyResolver(container, BulkProcessingActorSystem);
 
             ConsoleLogger.LogSystemMessage("Creating actor supervisory hierarchy");
             // setup the system
             BulkProcessingActorSystem.ActorOf(Props.Create<BulkProcessorActor>(), "BulkProcessorActor");
 
             ////send message to start processing the data
-           var someActor = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
+           var batchesManager = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
 
-            var someMessage = new StartBulkProcessingMessage();
+            var message = new StartBulkProcessingMessage();
+
             BulkProcessingActorSystem.Scheduler
                 .Schedule(TimeSpan.FromSeconds(0),
                     TimeSpan.FromSeconds(30),
-                    someActor, someMessage);
+                    batchesManager,
+                    message);
 
 
 
@@ -42,8 +60,8 @@ namespace BulkProcessor
                 var command = Console.ReadLine().ToLowerInvariant();
                 if (command.StartsWith("play"))
                 {
-                    int userId = int.Parse(command.Split(',')[1]);
-                    string movieTitle = command.Split(',')[2];
+                    //int userId = int.Parse(command.Split(',')[1]);
+                    //string movieTitle = command.Split(',')[2];
 
                     //var message = new PlayMovieMessage(movieTitle, userId);
                     // call actor using user selector using hierarchy
