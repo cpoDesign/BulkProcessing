@@ -19,25 +19,18 @@ namespace BulkProcessor
 
         static void Main(string[] args)
         {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterType<SystemConfig>().As<ISystemConfig>();
-
-            builder.RegisterType<ConfigActor>();
-
-            var container = builder.Build();
-
-
             ConsoleLogger.LogSystemMessage("Creating BulkProcessingActorSystem");
             BulkProcessingActorSystem = ActorSystem.Create(SystemName);
 
-            IDependencyResolver resolver = new AutoFacDependencyResolver(container, BulkProcessingActorSystem);
+            // register DI container to the system as : IDependencyResolver
+            var container = CreateAutofacContainer();
+            new AutoFacDependencyResolver(container, BulkProcessingActorSystem);
 
             ConsoleLogger.LogSystemMessage("Creating actor supervisory hierarchy");
             // setup the system
             BulkProcessingActorSystem.ActorOf(Props.Create<BulkProcessorActor>(), "BulkProcessorActor");
 
-            ////send message to start processing the data
+            //// send message to start processing the data
            var batchesManager = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
 
             var message = new StartBulkProcessingMessage();
@@ -100,6 +93,18 @@ namespace BulkProcessor
 
             //////Console.ReadKey();
             //////BulkProcessingSystem.Terminate();
+        }
+
+        private static IContainer CreateAutofacContainer()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<SystemConfig>().As<ISystemConfig>();
+
+            builder.RegisterType<ConfigActor>();
+
+            var container = builder.Build();
+            return container;
         }
 
         public static void ShortPause()
