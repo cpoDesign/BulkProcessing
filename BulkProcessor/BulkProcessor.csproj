@@ -77,8 +77,13 @@
   <ItemGroup>
     <Compile Include="Actors\BatchesManagerActor.cs" />
     <Compile Include="Actors\BatchesProcessor\BatchTypeDataAccessActor.cs" />
-    <Compile Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManagerActor.cs" />
     <Compile Include="Actors\BatchesProcessor\BulkProcessorActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManagerActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\Payments\JobCoordinatorActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\Payments\PaymentWorkerActor.cs" />
+    <Compile Include="Actors\BatchesProcessor\Payments\Messages\PaymentSentMessage.cs" />
+    <Compile Include="Actors\BatchesProcessor\Payments\Messages\ProcessFileMessage.cs" />
+    <Compile Include="Actors\BatchesProcessor\Payments\Messages\SendPaymentMessage.cs" />
     <Compile Include="Actors\BatchesProcessor\ConfigActor.cs" />
     <Compile Include="Actors\SystemMessages\ConfigMessage.cs" />
     <Compile Include="Actors\SystemMessages\LoggerMessage.cs" />
@@ -89,6 +94,8 @@
     <Compile Include="Constants\SystemConstants.cs" />
     <Compile Include="Constants\SystemPathsConstants.cs" />
     <Compile Include="Constants\LoggerTypes.cs" />
+    <Compile Include="DI\DemoPaymentGateway.cs" />
+    <Compile Include="DI\IPaymentGateway.cs" />
     <Compile Include="DI\ISystemConfig.cs" />
     <Compile Include="DI\SystemConfig.cs" />
     <Compile Include="Program.cs" />
@@ -99,15 +106,15 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\PaymentsFile.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManager\Movies\" />
-    <Folder Include="Actors\BatchesProcessor\BulkProcessor\BatchTypeManager\People\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{5504C81F-0C31-461B-9DAE-4A4257C01D4A}</Project>

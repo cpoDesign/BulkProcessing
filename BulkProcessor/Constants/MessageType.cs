@@ -7,5 +7,6 @@
     {
         People,
         Movies,
+        Payments,
     }
 }

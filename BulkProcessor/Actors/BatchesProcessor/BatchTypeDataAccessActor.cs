@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Event;
 using BulkProcessor.Actors.SystemMessages;
@@ -18,21 +17,6 @@ namespace BulkProcessor.Actors.BatchesProcessor
             var configActor = Context.ActorSelection(SystemPathsConstants.ConfigActorPath);
             var message = new ConfigMessage(SystemConstants.BatchSize);
             configActor.Tell(message, Self);
-
-            //Task.Run(async () =>
-            //{
-            //    var t1 = configActor.Ask(new ConfigMessage(SystemConstants.BatchSize), TimeSpan.FromSeconds(1));
-
-            //    await Task.WhenAll(t1);
-
-            //    return t1.Result;
-            //}).PipeTo(configActor, Self);
-
-            //configActor.Ask(new ConfigMessage(SystemConstants.BatchSize), TimeSpan.FromSeconds(1)).ContinueWith(t =>
-            //{
-            //    Console.WriteLine(t.Result);
-            //});
-            //Console.WriteLine(result.r);
         }
 
         #region lifecycle methods

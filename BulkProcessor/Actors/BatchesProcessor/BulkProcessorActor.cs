@@ -1,7 +1,6 @@
 ﻿using System;
 using Akka.Actor;
 using Akka.Event;
-using Akka.DI;
 using Akka.DI.Core;
 
 namespace BulkProcessor.Actors.BatchesProcessor
@@ -12,24 +11,16 @@ namespace BulkProcessor.Actors.BatchesProcessor
     public class BulkProcessorActor : ReceiveActor
     {
         private ILoggingAdapter _logger = Context.GetLogger();
+
         public BulkProcessorActor()
         {
-            
             _logger.Info("{0} actor created info", this.GetType().Name);
-
-            //_logger.Warning("{0} actor created warning", this.GetType().Name);
-
-            //_logger.Debug("{0} actor created debug", this.GetType().Name);
-
-            //_logger.Error("{0} actor created error", this.GetType().Name);
 
             Context.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
             Context.ActorOf(Props.Create<ProcessLoggerActor>(), "ProcessLoggerActor");
 
             // let DI to resove actor
             Context.ActorOf(Context.DI().Props<ConfigActor>(), "ConfigActor");
-
-
         }
 
         #region lifecycle methods

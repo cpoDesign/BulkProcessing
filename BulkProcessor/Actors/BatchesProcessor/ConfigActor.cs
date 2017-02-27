@@ -14,9 +14,9 @@ namespace BulkProcessor.Actors.BatchesProcessor
     public class ConfigActor : ReceiveActor
     {
         private readonly ISystemConfig _systemConfig;
-        private Dictionary<string, string> _configurationDictionary;
+        private readonly Dictionary<string, string> _configurationDictionary;
 
-        private ILoggingAdapter _logger = Context.GetLogger();
+        private readonly ILoggingAdapter _logger = Context.GetLogger();
         public ConfigActor(ISystemConfig systemConfig )
         {
             _configurationDictionary = new Dictionary<string, string>();
