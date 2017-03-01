@@ -20,7 +20,6 @@ namespace BulkProcessor
 
         static void Main(string[] args)
         {
-            ConsoleLogger.LogSystemMessage("Creating BulkProcessingActorSystem");
             BulkProcessingActorSystem = ActorSystem.Create(SystemName);
 
             // register DI container to the system as : IDependencyResolver
@@ -28,23 +27,14 @@ namespace BulkProcessor
             new AutoFacDependencyResolver(container, BulkProcessingActorSystem);
 
             ConsoleLogger.LogSystemMessage("Creating actor supervisory hierarchy");
+            
             // setup the system
             BulkProcessingActorSystem.ActorOf(Props.Create<BulkProcessorActor>(), "BulkProcessorActor");
             
             var jobTime = Stopwatch.StartNew();
 
-            //// send message to start processing the data
+            // send message to start processing the data
             var batchesManager = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
-
-            //var message = new StartBulkProcessingMessage();
-
-            //batchesManager.Tell(message);
-
-            //BulkProcessingActorSystem.Scheduler
-            //    .Schedule(TimeSpan.FromSeconds(0),
-            //        TimeSpan.FromSeconds(30),
-            //        batchesManager,
-            //        message);
 
             do
             {
@@ -57,8 +47,15 @@ namespace BulkProcessor
 
                 if (command.StartsWith("run"))
                 {
-                   
                     batchesManager.Tell(new StartBulkProcessingMessage());
+                }
+                
+                if (command.StartsWith("schedule")){
+                    BulkProcessingActorSystem.Scheduler
+                        .Schedule(TimeSpan.FromSeconds(0),
+                                    TimeSpan.FromSeconds(30),
+                                    batchesManager,
+                                    new StartBulkProcessingMessage());
                 }
 
                 if (command.StartsWith("exit"))
