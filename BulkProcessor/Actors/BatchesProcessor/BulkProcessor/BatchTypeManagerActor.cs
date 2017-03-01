@@ -23,18 +23,38 @@ namespace BulkProcessor.Actors.BatchesProcessor.BulkProcessor
 
             Context.ActorSelection(SystemPathsConstants.LoggerActorPath).Tell(new LoggerMessage(LoggerTypes.Trace, $"Created new BatchTypeManagerActor: {msgType}"));
 
-            switch (msgType)
+            Context.ActorOf(Props.Create<BatchTypeDataAccessActor>(), "BatchTypeDataAccessActor");
+
+            Receive<StartProcessingMessage>(message => StartProcessingMessage(message));
+        }
+
+        IActorRef paymentJobCooridinatorActor;
+        IActorRef peopleJobCoordinatorActor;
+        public void StartProcessingMessage(StartProcessingMessage message)
+        {
+            switch (_msgType)
             {
                 case MessageType.Payments:
                     {
-                        IActorRef jobCoordinator = Context.ActorOf(Context.DI().Props<JobCoordinatorActor>(), "JobCoordinator");
+                        if (paymentJobCooridinatorActor == null)
+                        {
+                            paymentJobCooridinatorActor = Context.ActorOf(Context.DI().Props<PaymentJobCoordinatorActor>(), "JobCoordinator");
+                        }
 
-                        jobCoordinator.Tell(new ProcessFileMessage("Data\\PaymentsFile.csv"));
+                        paymentJobCooridinatorActor.Tell(new ProcessFileMessage("Data\\PaymentsFile.csv"));
+                        break;
+                    }
+                case MessageType.People:
+                    {
+                        if (peopleJobCoordinatorActor == null)
+                        {
+                            peopleJobCoordinatorActor = Context.ActorOf(Context.DI().Props<PeopleJobCoordinatorActor>(), "JobCoordinator");
+                        }
+
+                        peopleJobCoordinatorActor.Tell(new ProcessFileMessage("Data\\PeopleData.csv"));
                         break;
                     }
             }
-
-            Context.ActorOf(Props.Create<BatchTypeDataAccessActor>(), "BatchTypeDataAccessActor");
         }
 
         #region lifecycle methods

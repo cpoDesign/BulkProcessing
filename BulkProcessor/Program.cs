@@ -8,6 +8,7 @@ using BulkProcessor.Actors.SystemMessages;
 using Akka.DI.AutoFac;
 using Autofac;
 using BulkProcessor.Actors.BatchesProcessor.BulkProcessor.BatchTypeManager.Payments;
+using BulkProcessor.DataAccess;
 using BulkProcessor.DI;
 
 namespace BulkProcessor
@@ -29,27 +30,21 @@ namespace BulkProcessor
             ConsoleLogger.LogSystemMessage("Creating actor supervisory hierarchy");
             // setup the system
             BulkProcessingActorSystem.ActorOf(Props.Create<BulkProcessorActor>(), "BulkProcessorActor");
-
-
+            
             var jobTime = Stopwatch.StartNew();
 
-       
             //// send message to start processing the data
             var batchesManager = BulkProcessingActorSystem.ActorOf(Props.Create<BatchesManagerActor>(), "BatchesManagerActor");
 
-            var message = new StartBulkProcessingMessage();
+            //var message = new StartBulkProcessingMessage();
 
-            batchesManager.Tell(message);
+            //batchesManager.Tell(message);
 
             //BulkProcessingActorSystem.Scheduler
             //    .Schedule(TimeSpan.FromSeconds(0),
             //        TimeSpan.FromSeconds(30),
             //        batchesManager,
             //        message);
-
-
-
-  
 
             do
             {
@@ -58,24 +53,13 @@ namespace BulkProcessor
                 Console.WriteLine();
                 ConsoleLogger.LogSystemMessage("enter a command and hit enter");
 
-                var command = Console.ReadLine().ToLowerInvariant();
-                ////    if (command.StartsWith("play"))
-                ////    {
-                ////        //int userId = int.Parse(command.Split(',')[1]);
-                ////        //string movieTitle = command.Split(',')[2];
+                var command = Console.ReadLine().ToLowerInvariant().Trim();
 
-                ////        //var message = new PlayMovieMessage(movieTitle, userId);
-                ////        // call actor using user selector using hierarchy
-                ////        //BulkProcessingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
-                ////    }
-
-                ////    //if (command.startswith("stop"))
-                ////    //{
-                ////    //    int userid = int.parse(command.split(',')[1]);
-                ////    //    var message = new stopmoviemessage(userid);
-
-                ////    //    bulkprocessingactorsystem.actorselection("/user/playback/usercoordinator").tell(message);
-                ////    //}
+                if (command.StartsWith("run"))
+                {
+                   
+                    batchesManager.Tell(new StartBulkProcessingMessage());
+                }
 
                 if (command.StartsWith("exit"))
                 {
@@ -85,28 +69,12 @@ namespace BulkProcessor
 
                     Console.WriteLine("Job complete in {0}ms ", jobTime.ElapsedMilliseconds);
                     ConsoleLogger.LogSystemMessage("Actor system shutdown. Press any key to exit...");
-                    Console.ReadLine();
+                    Console.ReadKey();
 
                     Environment.Exit(1);
                 }
 
             } while (true);
-
-
-            //////// the fact that user actor is created using the props does not mean 
-            //////// anything as it needs to be registered with the system to know about it.
-            //////Props userActorProps = Props.Create<UserActor>();
-
-            //////IActorRef actorRef = BulkProcessingSystem.ActorOf(paybackActorProps, "PlaybackActor");
-
-            //////actorRef.Tell("Akka.net rocks");
-            ////////Step to kill the instance of the actor
-            //////actorRef.Tell(PoisonPill.Instance);
-            //////// Attempt to send message again => message will be undelivered unless something will pick it up
-            //////actorRef.Tell("Akka.net rocks");
-
-            //////Console.ReadKey();
-            //////BulkProcessingSystem.Terminate();
         }
 
         private static IContainer CreateAutofacContainer()
@@ -115,9 +83,12 @@ namespace BulkProcessor
 
             builder.RegisterType<SystemConfig>().As<ISystemConfig>();
             builder.RegisterType<DemoPaymentGateway>().As<IPaymentGateway>();
+            builder.RegisterType<PersonDataAccess>().As<IPersonDataAccess>();
             builder.RegisterType<PaymentWorkerActor>();
-            builder.RegisterType<JobCoordinatorActor>();
+            builder.RegisterType<PaymentJobCoordinatorActor>();
             builder.RegisterType<ConfigActor>();
+            builder.RegisterType<PersonCreatorWorker>();
+            builder.RegisterType<PeopleJobCoordinatorActor>();
 
             var container = builder.Build();
             return container;

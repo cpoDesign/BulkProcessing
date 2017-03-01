@@ -9,12 +9,12 @@ using BulkProcessor.Actors.BatchesProcessor.BulkProcessor.BatchTypeManager.Payme
 namespace BulkProcessor.Actors.BatchesProcessor.BulkProcessor.BatchTypeManager.Payments
 {
     // Assumes we only get one file per invocation of the console application
-    internal class JobCoordinatorActor : ReceiveActor     
+    internal class PaymentJobCoordinatorActor : ReceiveActor     
     {
         private readonly IActorRef _paymentWorker;
         private int _numberOfRemainingPayments;
 
-        public JobCoordinatorActor()
+        public PaymentJobCoordinatorActor()
         {
             _paymentWorker = Context.ActorOf(Context.DI().Props<PaymentWorkerActor>().WithRouter(FromConfig.Instance), "PaymentWorkers");
 
@@ -34,7 +34,7 @@ namespace BulkProcessor.Actors.BatchesProcessor.BulkProcessor.BatchTypeManager.P
 
                     if (jobIsComplete)
                     {
-                        Context.System.Shutdown();
+                        //Context.System.Shutdown();
                     }
                 });
         }
