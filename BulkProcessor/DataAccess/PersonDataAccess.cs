@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BulkProcessor.DataAccess
@@ -16,31 +17,33 @@ namespace BulkProcessor.DataAccess
 
         public void InsertPerson(string title, string first, string last)
         {
-            using (IDbConnection db = new SqlConnection(connectionString))
-            {
-                db.Open();
-                using (IDbTransaction transactionScope = db.BeginTransaction(IsolationLevel.Serializable))
-                {
-                    string insertQuery = @"INSERT INTO [dbo].[People](
-    [Title],     
-    [FirstName], 
-    [LastName]  
-  ) VALUES (
-    @Title,
-	@FirstName, 
-    @LastName 
-)";
+            Debugger.Log(1, "test", "Insert persons");
 
-                    db.Execute(insertQuery, new
-                    {
-                        Title = title,
-                        FirstName = first,
-                        LastName = last
-                    }, transactionScope);
+            //            using (IDbConnection db = new SqlConnection(connectionString))
+            //            {
+            //                db.Open();
+            //                using (IDbTransaction transactionScope = db.BeginTransaction(IsolationLevel.Serializable))
+            //                {
+            //                    string insertQuery = @"INSERT INTO [dbo].[People](
+            //    [Title],     
+            //    [FirstName], 
+            //    [LastName]  
+            //  ) VALUES (
+            //    @Title,
+            //	@FirstName, 
+            //    @LastName 
+            //)";
 
-                    transactionScope.Commit();
-                }
-            }
+            //                    db.Execute(insertQuery, new
+            //                    {
+            //                        Title = title,
+            //                        FirstName = first,
+            //                        LastName = last
+            //                    }, transactionScope);
+
+            //                    transactionScope.Commit();
+            //                }
+            //            }
         }
     }
 }
